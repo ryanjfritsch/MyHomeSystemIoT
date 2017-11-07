@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    .city {
+      float: left;
+      margin: 5px;
+      padding: 15px;
+      max-width: 300px;
+      height: 300px;
+      border: 1px solid black;
+    }
+  </style>
+  <link rel="stylesheet" href="stylesheets/style.css">
+  <!-- OLD LIBS -->
+  <link href="https://fonts.googleapis.com/css?family=Coda|Merriweather+Sans|Russo+One" rel="stylesheet">
+  <!-- NEW LIBS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+  <script type="text/javascript">
+    window.onload = function () {
+
+        if(navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/Android/i)
+        || navigator.userAgent.match(/BlackBerry/i) || navigator.userAgent.match(/IEMobile/i)){
+            $("#viewport_device").attr("content", "initial-scale = 0.50");
+        }
+        else if(navigator.userAgent.match(/iPad/i)){
+            $("#viewport_device").attr("content", "initial-scale = 1.00");
+        }
+
+      var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+      var inW = ((width/4)).toString();
+
+      var power = [false, false, false];
+
+      $("#siteTitle").fadeOut(1);
+      $(".powerButton").hide();
+      $(".alert-success").hide();
+      $(".alert-info").hide();
+
+      // set up wifi animations
+      $("#wifi1").hide();
+      $("#wifi2").hide();
+      $("#wifi3").hide();
+      $("#wifi1").css({"transform": "rotate("+270+"deg)"});
+      $("#wifi2").css({"transform": "rotate("+270+"deg)"});
+      $("#wifi3").css({"transform": "rotate("+270+"deg)"});
+      wifiFade();
+
+      var blinkTime = 150;
+      var delayTime = 50;
+
+      function wifiFade(){
+
+        $("#wifi1").delay(700).fadeIn(90, "swing", function(){
+          $("#wifi2").fadeIn(blinkTime, "swing", function(){
+            $("#wifi3").fadeIn(blinkTime, "swing", function(){
+              $("#wifi1").fadeOut(blinkTime, "swing", function(){
+                $("#wifi2").fadeOut(blinkTime, "swing", function(){
+                  $("#wifi3").fadeOut(blinkTime, "swing", function(){
+                    $("#siteTitle").fadeIn(400, "swing");
+                    $("#wifi1").fadeIn(100, "swing", function(){
+                      $("#wifi2").fadeIn(blinkTime, "swing", function(){
+                        $("#wifi3").fadeIn(blinkTime, "swing", function(){
+                          $("#wifi1").fadeOut(blinkTime, "swing", function(){
+                            $("#wifi2").fadeOut(blinkTime, "swing", function(){
+                              $("#wifi3").fadeOut(blinkTime, "swing", function(){
+                                $(".powerButton").fadeIn(400);
+                              });
+                            });
+                          });
+                        });
+                      });
+                    });
+                  });
+                });
+              });
+            });
+          });
+        });
+
+      } // end wifiFade
+
+      $(".powerButton").click(function(){
+
+          var idnum = parseInt(this.id.substring(1));
+          var idstring = this.id.substring(1);
+
+          if(!power[idnum]){
+              wifiFade();
+              power[idnum] = true;
+
+              $("#devicerow"+idstring).addClass("bg-success text-white").delay(2000).queue(function(){
+                  $("#devicerow"+idstring).removeClass("bg-success text-white").dequeue();
+              });
+
+
+              var urlOn = '************ IFTTT URL ****************';
+
+              $.ajax({url: urlOn, type:"POST", success: function(result){
+                  console.log(result);
+              }});
+
+              $(this).fadeOut(30, function(){
+                $(this).attr('src','images/powerOn.png');
+                $(this).fadeIn(30);
+              });
+
+          } else if(power[idnum]){
+
+              wifiFade();
+              power[idnum] = false;
+
+              $("#devicerow"+idstring).addClass("bg-warning text-white").delay(2000).queue(function(){
+                  $("#devicerow"+idstring).removeClass("bg-warning text-white");
+              });
+
+              var urlOff = '************ IFTTT URL ****************';
+
+              $.ajax({url: urlOff, success: function(result){
+                  console.log(result);
+              }});
+
+              $(this).fadeOut(30, function(){
+                $(this).attr('src','images/powerOff.png');
+                $(this).fadeIn(30);
+              });
+          }
+
+
+    });
+}
+</script>
+</head>
+    <body>
+        <!--<div class="page-header">
+            <h1>Example Page Header</h1>-->
+        </div>
+        <div class="container">
+          <center>
+            <br>
+            <div id="header">
+              <img id="houselogo" src='/images/houselogo.png' alt="House">
+              <img id="myhometitle" src='/images/myhomesystem.png' alt="Title">
+              <div id="wifi1"></div>
+              <div id="wifi2"></div>
+              <div id="wifi3"></div>
+            </div>
+          </center>
+
+          <center>
+              <div id="siteTitle">MyHomeSystem</div>
+          </center>
+
+          <br><br><br>
+
+          <div class="row">
+              <table class="table deviceTable">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Device Name</th>
+                      <th>Device ID</th>
+                      <th>Power</th>
+                    </tr>
+                  </thead>
+                  <tbody>

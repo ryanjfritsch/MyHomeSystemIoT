@@ -44,6 +44,8 @@
       $(".alert-success").hide();
       $(".alert-info").hide();
 
+      $("#siteTitle").fadeIn(1, "swing");
+
       // set up wifi animations
       $("#wifi1").hide();
       $("#wifi2").hide();
@@ -65,7 +67,6 @@
               $("#wifi1").fadeOut(blinkTime, "swing", function(){
                 $("#wifi2").fadeOut(blinkTime, "swing", function(){
                   $("#wifi3").fadeOut(blinkTime, "swing", function(){
-                    $("#siteTitle").fadeIn(400, "swing");
                     $("#wifi1").fadeIn(100, "swing", function(){
                       $("#wifi2").fadeIn(blinkTime, "swing", function(){
                         $("#wifi3").fadeIn(blinkTime, "swing", function(){

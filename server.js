@@ -334,6 +334,15 @@ server.listen(port, hostname, () => {
 
 
 process.on('uncaughtException', function (err) {
+
+    request.post( '********* IFTTT NOTIFICATION *********',
+        function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                // console.log('IFTTT notification triggered')
+            }
+        }
+    );
+
   console.log('Caught exception: ' + err);
 });
 

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 
 ## Created by Ryan Fritsch
 
@@ -7,16 +6,20 @@
 ## data is parsed and sent to the server. The server
 ## then updates the AWS connected database.
 
-
 import serial
 import httplib, urllib
 import requests
 import time
 import json
 
-
-## connect to Arduino
 ser = serial.Serial('/dev/ttyACM0',9600)
+
+def iftttAPI():
+    try:
+        r = requests.post("https://maker.ifttt.com/trigger/xxxxxxxxxxxxxxxxxxxxxxxxxxx")
+    except requests.exceptions.RequestException as e:
+        print e
+    return;
 
 print "Running temperature sensor."
 
@@ -42,18 +45,19 @@ while True:
             if(hLen == 2):
                 print "Attempting server update..."
                 trigger = 0
-                payload = {"id":"1730ryanroom",
+                payload = {"id":"xxxxxxxxxxxxxxxxxxxxxx",
                            "humid":"%s" % humidity,
                            "temp":"%s" % temperature
                            }
-                r = requests.post("xxxxxxx SERVER URL xxxxxxxx",
-                                  data=json.dumps(payload),
-                                  allow_redirects=False,
-                                  timeout=10
-                                  )
-                print "Weather server updated."
-
-
+                try:
+                    r = requests.post("xxxxxxxxxxxxxxxxxxxxxx",
+                                      data=json.dumps(payload),
+                                      allow_redirects=False,
+                                      timeout=10
+                                      )
+                    print "Weather server updated."
+                except requests.exceptions.RequestException as x:
+                    iftttAPI()
 
     trigger = trigger + 1
 

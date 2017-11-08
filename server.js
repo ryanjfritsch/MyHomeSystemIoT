@@ -43,7 +43,8 @@ const server = http.createServer((req, res) => {
 
   var urlObj = url.parse(req.url, true, false);
 
-  var ipIn = req.connection.remoteAddress;
+
+  
 
 
   if(req.method == "POST"){

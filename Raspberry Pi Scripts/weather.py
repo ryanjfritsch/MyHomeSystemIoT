@@ -1,4 +1,5 @@
 
+
 ## Created by Ryan Fritsch
 
 ## This script uses OpenWeatherMap.com's weather
@@ -18,6 +19,15 @@ import json
 print "Running outside weather API."
 
 
+def iftttAPI():
+    try:
+        r = requests.post("https://maker.ifttt.com/trigger/xxxxxxxxxxxxxxxxxxxxxx")
+    except requests.exceptions.RequestException as x:
+        print x
+    return;
+
+
+
 t2 = 0
 
 while True:
@@ -28,10 +38,9 @@ while True:
         print "Getting outside weather..."
 
         try:
-            w = requests.get("https://api.openweathermap.org/data/2.5/weather?zip=xxxxx,us&APPID=xxxxxxxxxxxxxxxxxxx")
+            w = requests.get("https://api.openweathermap.org/data/2.5/weather?zip=xxxxx,us&APPID=xxxxxxxxxxxxxxxxxxxx")
             json_data = w.json()
 
-            ## parse data and convert Kelvin to Fahrenheit
             outTemp = json_data["main"]["temp"]
             outTemp = (outTemp*1.8) - 459.67
             outTemp = str(outTemp)
@@ -50,22 +59,18 @@ while True:
                                    "temp":"%s" % outTemp
                                    }
 
-                    r = requests.post("xxxxxxxxxxxxxxxxxxx",
+                    r = requests.post("xxxxxxxxxxxxxxx",
                                         data=json.dumps(payload),
                                         allow_redirects=False,
                                         timeout=10
                                     )
 
-                t2 = 0;
+                t2 = 0
 
                 print "Outside weather updated."
 
-
-
         except requests.exceptions.RequestException as e:
-            r = requests.post("******* IFTTT NOTIFICATION REQUEST URL *******")
-            print e
-
+            iftttAPI()
 
 
 

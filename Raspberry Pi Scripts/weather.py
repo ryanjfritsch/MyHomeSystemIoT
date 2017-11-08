@@ -63,6 +63,7 @@ while True:
 
 
         except requests.exceptions.RequestException as e:
+            r = requests.post("******* IFTTT NOTIFICATION REQUEST URL *******")
             print e
 
 

@@ -1,0 +1,31 @@
+
+#pagenotfoundtitle
+{
+    font-family: 'Coda';
+    color: white;
+    font-size: 35px;
+}
+
+#detailstitle
+{
+    font-family: 'Coda';
+    color: white;
+    font-size: 20px;
+}
+
+#errorlogo
+{
+    position: absolute;
+    top: 110px;
+    left: calc(50% - 40px);
+    width:80px; height:80px;
+}
+
+#footerName
+{
+    top: 800px;
+    position: absolute;
+    width: 200px;
+    text-align: center;
+    left: calc(50% - 100px);
+}

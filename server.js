@@ -44,7 +44,7 @@ const server = http.createServer((req, res) => {
   var urlObj = url.parse(req.url, true, false);
 
 
-  
+
 
 
   if(req.method == "POST"){
@@ -317,11 +317,19 @@ const server = http.createServer((req, res) => {
 
           } else {
 
-              res.writeHead(200, {
-               'Content-Type': 'text/html',
-              });
+              fs.readFile('********* FILE PATH *********', function (err,data) {
+                if (err) {
+                  res.writeHead(404);
+                  res.end(JSON.stringify(err));
+                  return;
+                }
 
-              res.end("Page does not exist. Please try a different URL.");
+                res.writeHead(200, {
+                 'Content-Type': 'text/html',
+                });
+
+                res.end(data);
+            });
 
           }
       }

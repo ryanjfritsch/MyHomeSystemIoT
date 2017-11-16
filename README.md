@@ -1,6 +1,6 @@
 # MyHomeSystemIoT
 
-MyHomeSystem.online is my personal IoT website. I am hosting this website via a node.js server in my home. With this website, I can monitor the temperature inside and outside my home, as well as turn on/off my WeMo wifi power outlet switch.
+[MyHomeSystem.online](http://myhomesystem.online) is my personal IoT website. I am hosting this website via a node.js server in my home. With this website, I can monitor the temperature inside and outside my home, as well as turn on/off my WeMo wifi power outlet switch.
 
 #### Devices running on MyHomeSystem:
 - server running node.js

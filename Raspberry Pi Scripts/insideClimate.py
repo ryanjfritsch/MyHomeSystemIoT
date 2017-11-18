@@ -24,7 +24,6 @@ def iftttAPI():
 print "Running temperature sensor."
 
 trigger = 0
-t2 = 0
 
 while True:
 

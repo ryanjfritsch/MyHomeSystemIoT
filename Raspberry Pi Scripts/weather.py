@@ -27,13 +27,14 @@ def iftttAPI():
     return;
 
 
-
 t2 = 0
 
 while True:
 
 
     if(t2 >= 100):
+
+        t2 = 0;
 
         print "Getting outside weather..."
 
@@ -64,8 +65,6 @@ while True:
                                         allow_redirects=False,
                                         timeout=10
                                     )
-
-                t2 = 0
 
                 print "Outside weather updated."
 

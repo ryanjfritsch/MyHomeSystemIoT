@@ -73,6 +73,13 @@ body
   font-size: 25px;
 }
 
+#nothingFound
+{
+  font-family: 'Coda';
+  color: white;
+  font-size: 20px;
+}
+
 #signInForm
 {
     display:none;

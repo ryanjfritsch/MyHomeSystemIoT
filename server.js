@@ -159,69 +159,100 @@ const server = http.createServer((req, res) => {
 
                  var htmlPage = data;
 
+                 // LOAD WIFI SWITCH DATA
                  connection.query('SELECT * FROM wifiswitches', function (error, results, fields) {
-                     var deviceCount = results.length;
 
-                     //console.log(deviceCount+" DEVICES");
+                     if(results){
 
-                     var endOfTable = "</tbody></table><br><br></div></body></html>";
+                         var deviceCount = results.length;
 
-                     for (var i = 0; i < deviceCount; i++) {
-                         var tableLayout = "<tr id='devicerow"+i+"'>"+
-                           "<th scope='row'>"+(i+1)+"</th>"+
-                           "<td>"+results[i].name+"</td>"+
-                           "<td id='id"+i+"'>"+results[i].id+"</td>";
+                         var startofTable = "<div class='tableTitle'>Wifi Switches<div>"+
+                                                "<div class='row'>"+
+                                                    "<table class='table deviceTable'>"+
+                                                        "<thead>"+
+                                                            "<tr>"+
+                                                                "<th>#</th>"+
+                                                                "<th>Device Name</th>"+
+                                                                "<th>Device ID</th>"+
+                                                                "<th>Power</th>"+
+                                                            "</tr>"+
+                                                        "</thead>"+
+                                                    "<tbody>";
 
-                       if(results[i].state == 0){
-                           tableLayout = tableLayout + "<td><input type='image' class='powerButton' src='images/powerOff.png' id='p"+i+"'/></td>"+
-                           "</tr>";
-                       } else {
-                           tableLayout = tableLayout + "<td><input type='image' class='powerButton' src='images/powerOn.png' id='p"+i+"'/></td>"+
-                           "</tr>";
-                       }
 
-                         htmlPage = htmlPage + tableLayout;
+                         var endOfTable = "</tbody></table><br><br></div></body></html>";
+
+
+
+                         // SET UP TABLE HTML
+                         for (var i = 0; i < deviceCount; i++) {
+                             var tableLayout = "<tr id='devicerow"+i+"'>"+
+                               "<th scope='row'>"+(i+1)+"</th>"+
+                               "<td>"+results[i].name+"</td>"+
+                               "<td id='id"+i+"'>"+results[i].id+"</td>";
+
+                           if(results[i].state == 0){
+                               tableLayout = tableLayout + "<td><input type='image' class='powerButton' src='images/powerOff.png' id='p"+i+"'/></td>"+
+                               "</tr>";
+                           } else {
+                               tableLayout = tableLayout + "<td><input type='image' class='powerButton' src='images/powerOn.png' id='p"+i+"'/></td>"+
+                               "</tr>";
+                           }
+
+                             htmlPage = htmlPage + startofTable + tableLayout;
+                         }
+
+                         htmlPage = htmlPage + endOfTable;
+                         //console.log(htmlPage);
+
+                     } else {
+                         htmlPage = htmlPage + "<br><br><div id='nothingFound'>No connected WiFi switches found. Refresh the page to search again.</div>";
                      }
 
-                     htmlPage = htmlPage + endOfTable;
-                     //console.log(htmlPage);
-
+                     // LOAD WEATHER SENSOR DATA
                      connection.query('SELECT * FROM sensors', function (error, results, fields) {
-                         var sensorCount = results.length;
 
-                         var sensorTable = "<br><div class='tableTitle'>Connected Weather Sensors<div>"+
-                         "<div class='row'>"+
-                             "<table class='table sensorTable'>"+
-                                 "<thead>"+
-                                   "<tr>"+
-                                     "<th>#</th>"+
-                                     "<th>Name</th>"+
-                                     "<th>Location</th>"+
-                                     "<th>Temperature</th>"+
-                                     "<th>Humidity</th>"+
-                                     "<th>Last Updated</th>"+
-                                   "</tr>"+
-                                 "</thead>"+
-                                 "<tbody>";
+                         if(results){
+                             var sensorCount = results.length;
 
-                                 htmlPage = htmlPage + sensorTable;
+                             var sensorTable = "<br><div class='tableTitle'>Connected Weather Sensors<div>"+
+                             "<div class='row'>"+
+                                 "<table class='table sensorTable'>"+
+                                     "<thead>"+
+                                       "<tr>"+
+                                         "<th>#</th>"+
+                                         "<th>Name</th>"+
+                                         "<th>Location</th>"+
+                                         "<th>Temperature</th>"+
+                                         "<th>Humidity</th>"+
+                                         "<th>Last Updated</th>"+
+                                       "</tr>"+
+                                     "</thead>"+
+                                     "<tbody>";
 
-                                 for (var i = 0; i < sensorCount; i++) {
-                                     var tableLayout = "<tr id='sensorrow"+i+"'>"+
-                                       "<th scope='row'>"+(i+1)+"</th>"+
-                                       "<td>"+results[i].name+"</td>"+
-                                       "<td>"+results[i].location+"</td>"+
-                                       "<td style='font-size:30px;'>"+results[i].sensor1+"&#x2109</td>"+
-                                       "<td style='font-size:30px;'>"+results[i].sensor2+"%</td>"+
-                                       "<td style='font-size:26px;'>"+results[i].lastUpdate+"</td>"+
-                                       "</tr>";
+                                     htmlPage = htmlPage + sensorTable;
+
+                                     for (var i = 0; i < sensorCount; i++) {
+                                         var tableLayout = "<tr id='sensorrow"+i+"'>"+
+                                           "<th scope='row'>"+(i+1)+"</th>"+
+                                           "<td>"+results[i].name+"</td>"+
+                                           "<td>"+results[i].location+"</td>"+
+                                           "<td style='font-size:30px;'>"+results[i].sensor1+"&#x2109</td>"+
+                                           "<td style='font-size:30px;'>"+results[i].sensor2+"%</td>"+
+                                           "<td style='font-size:26px;'>"+results[i].lastUpdate+"</td>"+
+                                           "</tr>";
 
 
-                                     htmlPage = htmlPage + tableLayout;
-                                 }
+                                         htmlPage = htmlPage + tableLayout;
+                                     }
 
-                                 htmlPage = htmlPage + endOfTable + "<br><br><br><br><center><p id='footerName'>Made by Ryan Fritsch</p></center>";
+                                     htmlPage = htmlPage + endOfTable + "<br><br><br><br><center><p id='footerName'>Made by Ryan Fritsch</p></center>";
 
+                         } else {
+
+                             htmlPage = htmlPage + "<br><br><div id='nothingFound'>No connected weather sensors found. Refresh the page to search again.</div>"+
+                                                    "</div></body></html>" + "<br><br><br><br><center><p id='footerName'>Made by Ryan Fritsch</p></center>";
+                         }
 
                          res.writeHead(200, {
                           'Content-Type': 'text/html',

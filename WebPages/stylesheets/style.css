@@ -2,7 +2,7 @@
 
 body
 {
-    background-image: url('../images/backgroundblue.jpg');
+    background-color: #012e77 !important;
     font-family: 'Coda';
     color: white;
     font-size: 25px;

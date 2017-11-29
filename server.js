@@ -10,19 +10,20 @@ var fs = require('fs');
 var path = require('path');
 var request = require('request');
 var mysql = require('mysql');
+const keys = require('./config/keys');
 
 
-const hostname = ********;
-const port = ****;
+const hostname = keys.hostName;
+const port = keys.port;
 
 
-// connect to AWS database
+// connect to database
 var connection = mysql.createConnection({
-  host     : *************,
-  user     : *************,
-  password : *************,
-  database : *************,
-  port     : *************
+  host     : keys.awsHost,
+  user     : keys.awsUser,
+  password : keys.awsPassword,
+  database : keys.awsDatabase,
+  port     : keys.awsPort
 });
 
 
@@ -150,7 +151,7 @@ const server = http.createServer((req, res) => {
             console.log(' ')
             console.log('**   Accessed at ' + hour + ':' + minute + ' on ' + (month+1) + '/' + day + '/' + year)
 
-               fs.readFile('********* FILE PATH ************', function (err,data) {
+               fs.readFile('WebPages/HtmlFiles/devices.html', function (err,data) {
                  if (err) {
                    res.writeHead(404);
                    res.end(JSON.stringify(err));
@@ -277,7 +278,7 @@ const server = http.createServer((req, res) => {
 
             if(urlObj.pathname.indexOf('.html') != -1){
 
-              fs.readFile('*********** FILE PATH ***************', function (err,data) {
+              fs.readFile('WebPages' + urlObj.pathname, function (err,data) {
                 if (err) {
                   res.writeHead(404);
                   res.end(JSON.stringify(err));
@@ -313,7 +314,7 @@ const server = http.createServer((req, res) => {
 
           } else if(urlObj.pathname.indexOf('.js') != -1){
 
-              fs.readFile('******** FILE PATH *******', function (err,data) {
+              fs.readFile('WebPages' + urlObj.pathname, function (err,data) {
                 if (err) {
                   res.writeHead(404);
                   res.end(JSON.stringify(err));
@@ -331,7 +332,7 @@ const server = http.createServer((req, res) => {
 
             } else if(urlObj.pathname.indexOf('.jpg') != -1 || urlObj.pathname.indexOf('.png') != -1 || urlObj.pathname.indexOf('.gif') != -1 || urlObj.pathname.indexOf('.ico') != -1){
 
-              fs.readFile('******** FILE PATH *******', function (err,data) {
+              fs.readFile('WebPages' + urlObj.pathname, function (err,data) {
                 if (err) {
                   res.writeHead(404);
                   res.end(JSON.stringify(err));
@@ -346,9 +347,9 @@ const server = http.createServer((req, res) => {
 
               });
 
-          } else {
+          } else {  // 500 level error
 
-              fs.readFile('********* FILE PATH *********', function (err,data) {
+              fs.readFile('WebPages/HtmlFiles/pagenotfound.html', function (err,data) {
                 if (err) {
                   res.writeHead(404);
                   res.end(JSON.stringify(err));
@@ -375,7 +376,7 @@ server.listen(port, hostname, () => {
 
 process.on('uncaughtException', function (err) {
 
-    request.post( '********* IFTTT NOTIFICATION *********',
+    request.post( keys.serverProblemIFTTT,
         function (error, response, body) {
             if (!error && response.statusCode == 200) {
                 // console.log('IFTTT notification triggered')
@@ -390,7 +391,7 @@ process.on('uncaughtException', function (err) {
 
 function powerButtonClicked() {
 
-    var url = '******** IFTTT REQUEST URL *******';
+    var url = keys.switchPowerOnIFTTT;
 
     request(url, function (error, response, body) {
         if (!error && response.statusCode == 200) {
